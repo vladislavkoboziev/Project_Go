@@ -1,6 +1,7 @@
 package model
 
 import (
+	"awesomeProject/src/logers"
 	"database/sql"
 	"encoding/csv"
 	"fmt"
@@ -59,6 +60,7 @@ func connections() *sql.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
+	logers.Warning.Println("return from connection function", connectbd)
 	return connectbd
 }
 func (person Person) Insert() {
@@ -70,6 +72,7 @@ func (person Person) Insert() {
 		fmt.Println(err)
 	}
 	fmt.Println(rw)
+	logers.Warning.Println("insert successful")
 } ////2
 
 func (person Person) Update() {
@@ -80,6 +83,7 @@ func (person Person) Update() {
 		fmt.Println(err)
 	}
 	fmt.Println(rs.RowsAffected())
+	logers.Debug.Println("update successful")
 } ////3
 func (person Person) GetAll() []Person {
 	connect := connections()
@@ -101,7 +105,9 @@ func (person Person) GetAll() []Person {
 	for _, p := range people {
 		fmt.Println(p.Id, p.FirstName, p.LastName, p.Email, p.Gender, p.DateRegistration, p.Loan)
 	}
+	logers.Debug.Println("return from GetAll method", people)
 	return people
+
 } ////4
 func (person Person) Delete(id int) {
 	connect := connections()
@@ -111,9 +117,11 @@ func (person Person) Delete(id int) {
 		fmt.Println(err)
 	}
 	fmt.Println(rs.RowsAffected())
+	logers.Debug.Println("delete successful")
 }
 
 func Filters(name, firstDate, secondDate, gender string) []Person {
+	logers.Info.Println("call Filters function")
 	str := "select * from table_name"
 	switch {
 	case name != "":
@@ -162,5 +170,6 @@ func Filters(name, firstDate, secondDate, gender string) []Person {
 		}
 		people = append(people, d)
 	}
+	logers.Debug.Println("return from Filters function:", people)
 	return people
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"awesomeProject/src/handle"
+	"awesomeProject/src/logers"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,6 +11,9 @@ import (
 )
 
 func main() {
+
+	logers.InitLogger()
+	logers.Info.Println("Server start")
 	router := mux.NewRouter()
 	router.HandleFunc("/people", handle.GetPeople).Methods("GET")
 	router.HandleFunc("/person/", handle.InsertPerson).Methods("POST")
