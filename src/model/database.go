@@ -5,7 +5,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	_ "github.com/lib/pq"
-	"go/token"
 	"log"
 	"os"
 	"strconv"
@@ -114,11 +113,39 @@ func (person Person) Delete(id int) {
 	fmt.Println(rs.RowsAffected())
 }
 
-func Filters(person Person) []Person {
-	connect := connections()
-	rows, err := connect.Query("select * from table_name")
+func Filters(name, firstname, secondname, gender string) []Person {
+	var people []Person
+	db := connections()
+	defer db.Close()
+	defer db.Close()
+	query := "select * from table_name where name = name AND where firstDate = firstDate AND where secondDate = secondDate ANDwhere gender = gender"
+	switch {
+
+	case name != "":
+		query += name
+
+	case firstname != "":
+		query += firstname
+
+	case secondname != "":
+		query += secondname
+
+	case gender != "":
+		query += gender
+	}
+
+	rows, err := db.Query(query)
 	if err != nil {
 		fmt.Println(err)
 	}
+	for rows.Next() {
+		d := Person{}
+		err := rows.Scan(&d.Id, &d.FirstName, &d.LastName, &d.Email, &d.Gender, &d.DateRegistration, &d.Loan)
+		if err != nil {
 
+			continue
+		}
+		people = append(people, d)
+	}
+	return people
 }

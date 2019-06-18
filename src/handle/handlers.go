@@ -3,6 +3,7 @@ package handle
 import (
 	"awesomeProject/src/model"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -36,4 +37,14 @@ func DeletePerson(w http.ResponseWriter, r *http.Request) {
 	user.Delete(id)
 	response := "Ok!"
 	json.NewEncoder(w).Encode(response)
+}
+func UsersFilter(w http.ResponseWriter, r *http.Request) {
+	name := r.FormValue("name")
+	firstname := r.FormValue("firstDate")
+	secondname := r.FormValue("secondDate")
+	gender := r.FormValue("gender")
+	fmt.Println("fields for Filter:", name, firstname, secondname, gender)
+	users := model.Filters(name, firstname, secondname, gender)
+	json.NewEncoder(w).Encode(users)
+
 }
