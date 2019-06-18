@@ -117,6 +117,7 @@ func Filters(name, firstDate, secondDate, gender string) []Person {
 	str := "select * from table_name"
 	switch {
 	case name != "":
+
 		str += " where first_name= '" + name + "'"
 		fallthrough
 
@@ -126,6 +127,20 @@ func Filters(name, firstDate, secondDate, gender string) []Person {
 			str += " and gender= '" + gender + "'"
 		} else if name == "" && gender != "" {
 			str += " where gender= '" + gender + "'"
+		}
+		fallthrough
+	case firstDate != "":
+		if (name != "" || gender != "") && firstDate != "" {
+			str += " and date_registration >='" + firstDate + "'"
+		} else if name == "" && gender == "" {
+			str += "where date_registration >='" + firstDate + "'"
+		}
+		fallthrough
+	case secondDate != "":
+		if (name != "" || gender != "" || firstDate != "") && secondDate != "" {
+			str += " and date_registration <='" + secondDate + "'"
+		} else if name == "" && gender == "" && firstDate == "" {
+			str += "where date_registration <='" + secondDate + "'"
 		}
 	}
 	var people []Person
