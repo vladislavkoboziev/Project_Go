@@ -135,6 +135,7 @@ func Filters(name, firstDate, secondDate, gender string) []Person {
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	defer rows.Close()
 
 	for rows.Next() {
