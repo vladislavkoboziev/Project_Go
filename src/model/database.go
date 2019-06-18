@@ -50,21 +50,21 @@ func parsing_csv() {
 	}
 
 }
-func connections() *sql.DB {
+func connection() *sql.DB {
 	//connectbd, err := sql.Open("postgres", "postgres://postgres:7154016@localhost/?sslmode=disable")
-	connectbd, err := sql.Open("postgres", "postgres://postgres:7154016@localhost/?sslmode=disable")
+	connectdb, err := sql.Open("postgres", "postgres://postgres:7154016@localhost/?sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = connectbd.Ping()
+	err = connectdb.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
-	logers.Warning.Println("return from connection function", connectbd)
-	return connectbd
+	logers.Warning.Println("return from connection function", connectdb)
+	return connectdb
 }
 func (person Person) Insert() {
-	connect := connections()
+	connect := connection()
 	defer connect.Close()
 	rw, err := connect.Exec("insert into table_name (first_name,last_name,email,gender,date_registration,loan) values ($1,$2,$3,$4,$5,$6)",
 		person.FirstName, person.LastName, person.Email, person.Gender, time.Now(), person.Loan)
@@ -76,7 +76,7 @@ func (person Person) Insert() {
 } ////2
 
 func (person Person) Update() {
-	connect := connections()
+	connect := connection()
 	defer connect.Close()
 	rs, err := connect.Exec("update table_name set first_name = $1  where id = $2", person.FirstName, person.Id)
 	if err != nil {
@@ -86,7 +86,7 @@ func (person Person) Update() {
 	logers.Debug.Println("update successful")
 } ////3
 func (person Person) GetAll() []Person {
-	connect := connections()
+	connect := connection()
 	defer connect.Close()
 	rows, err := connect.Query("select * from table_name")
 	if err != nil {
@@ -110,7 +110,7 @@ func (person Person) GetAll() []Person {
 
 } ////4
 func (person Person) Delete(id int) {
-	connect := connections()
+	connect := connection()
 	defer connect.Close()
 	rs, err := connect.Exec("delete from table_name where id = $1", id)
 	if err != nil {
@@ -152,7 +152,7 @@ func Filters(name, firstDate, secondDate, gender string) []Person {
 		}
 	}
 	var people []Person
-	db := connections()
+	db := connection()
 	defer db.Close()
 	rows, err := db.Query(str)
 	if err != nil {

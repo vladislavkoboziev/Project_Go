@@ -1,3 +1,5 @@
+github.com/franela/goblin v0.0.0-20181003173013-ead4ad1d2727 h1:eouy4stZdUKn7n98c1+rdUTxWMg+jvhP+oHt0K8fiug=
+github.com/franela/goblin v0.0.0-20181003173013-ead4ad1d2727/go.mod h1:7dvUGVsVBjqR7JHJk0brhHOZYGmfBYOrK0ZhYMEtBr4=
 github.com/gorilla/mux v1.7.2 h1:zoNxOV7WjqXptQOVngLmcSQgXmgk4NMz1HibBchjl/I=
 github.com/gorilla/mux v1.7.2/go.mod h1:1lud6UwP+6orDFRuTfBEV8e9/aOM/c4fVVCaMa2zaAs=
 github.com/lib/pq v1.1.1 h1:sJZmqHoEaY7f+NPP8pgLB/WxulyR3fewgCM2qaSlBb4=
