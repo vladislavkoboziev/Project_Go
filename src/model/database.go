@@ -113,36 +113,35 @@ func (person Person) Delete(id int) {
 	fmt.Println(rs.RowsAffected())
 }
 
-func Filters(name, firstname, secondname, gender string) []Person {
+func Filters(name, firstDate, secondDate, gender string) []Person {
+	str := "select * from table_name"
+	switch {
+	case name != "":
+		str += " where first_name= '" + name + "'"
+		fallthrough
+
+	case gender != "":
+
+		if name != "" && gender != "" {
+			str += " and gender= '" + gender + "'"
+		} else if name == "" && gender != "" {
+			str += " where gender= '" + gender + "'"
+		}
+	}
 	var people []Person
 	db := connections()
 	defer db.Close()
-	defer db.Close()
-	query := "select * from table_name where name = name AND where firstDate = firstDate AND where secondDate = secondDate ANDwhere gender = gender"
-	switch {
-
-	case name != "":
-		query += name
-
-	case firstname != "":
-		query += firstname
-
-	case secondname != "":
-		query += secondname
-
-	case gender != "":
-		query += gender
-	}
-
-	rows, err := db.Query(query)
+	rows, err := db.Query(str)
 	if err != nil {
 		fmt.Println(err)
 	}
+	defer rows.Close()
+
 	for rows.Next() {
 		d := Person{}
 		err := rows.Scan(&d.Id, &d.FirstName, &d.LastName, &d.Email, &d.Gender, &d.DateRegistration, &d.Loan)
 		if err != nil {
-
+			fmt.Println(err)
 			continue
 		}
 		people = append(people, d)
